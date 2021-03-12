@@ -17,7 +17,9 @@ confirm_logged_in();//only login in user can see the index.php page
 
     <h3>You are in level: <?php echo getCurrentUserLevel();?></h3>
 
-
+    <h4>IP address:  <?php echo $_SESSION['user_ip'];?></h4>
+    <h4>Last Login Time: <?php echo $_SESSION['user_lastlogintime']; ?></h4>
+    <h4>Number of Successful Login: <?php echo $_SESSION['success_login_number'];?></h4>
     <br>
     
     <?php if (isCurrentUserAdminAbove()):?>
