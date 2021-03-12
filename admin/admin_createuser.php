@@ -8,11 +8,11 @@ if (isset($_POST['submit'])) {
         'username'=>trim($_POST['username']),
         'password'=>trim($_POST['password']),
         'email'=>trim($_POST['email']),
+        'user_level'=>trim($_POST['user_level']),
     );
 
     $message = createUser($data);
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -36,10 +36,19 @@ if (isset($_POST['submit'])) {
         <input id="username" type="text" name="username" value=""><br><br>
 
         <label for="password">Password : </label>
-        <?php echo randomPassword();?><br><br>
+        <input id="password" type="text" name="password" value=""><br><br>
 
         <label for="email">Email</label>
         <input id="email" type="email" name="email" value=""><br><br>
+
+        <label for="user_level">User Level</label>
+        <select name="user_level" id="user_level">
+            <?php $user_level_map = getUserLevelMap();
+                foreach ($user_level_map as $val => $label):?>
+            <option value="<?php echo $val;?>"><?php echo $label;?>
+            </option>
+            <?php endforeach;?>
+        </select><br><br>
 
         <button type="submit" name="submit">Create User</button>
 

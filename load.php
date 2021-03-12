@@ -1,15 +1,14 @@
 <?php
-define('ABSPATH', __DIR__);
-define('ADMIN_PATH', ABSPATH.'/admin');
-define('ADMIN_SCRIPT_PATH', ADMIN_PATH.'/scriptS');
+define('ABSPATH',__DIR__);//php will detect the director where is being called and save as a constant
+define('ADMIN_PATH',ABSPATH.'/admin');
+define('ADMIN_SCRIPT_PATH',ADMIN_PATH.'/scripts');
 
-
-# Turn display error on, DEBUG ONLY!! Please turn if off in your production env
+//  ini_set('display_errors',1); or change 1 to 0
 ini_set('display_errors', 1);
 
-session_start();
+session_start();//server create session for us and it unique
 
-require_once ABSPATH.'/config/database.php';
-require_once ADMIN_SCRIPT_PATH.'/functions.php';
-require_once ADMIN_SCRIPT_PATH.'/read.php';
+//load constant rather than repeat path x times
+require_once ABSPATH. '/config/database.php';
 require_once ADMIN_SCRIPT_PATH.'/login.php';
+require_once ADMIN_SCRIPT_PATH.'/functions.php';

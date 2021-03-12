@@ -1,6 +1,7 @@
 <!-- for any helper functions for login/log out -->
 <?php
-function login($username, $password, $ip) {
+function login($username, $password, $ip) 
+{
 
     ## TODO remove the following debug when done
     //return 'You are trying to login with Username:'.$username.'Password:'.$password;
@@ -17,15 +18,17 @@ function login($username, $password, $ip) {
         )
     );
 
-    if($found_user = $user_set -> fetch(PDO::FETCH_ASSOC)){//PDO::FETCH_ASSOC tells PDO to return the result as an associative array.
-       //if found user exist in user database, get him in!
+    if($found_user = $user_set -> fetch(PDO::FETCH_ASSOC)){
+        //PDO::FETCH_ASSOC tells PDO to return the result as an associative array.
+        //if found user exist in user database, get him in!
 
         $found_user_id = $found_user['user_id'];//get user id
+
         //write the username and userID into session
         $_SESSION['user_id'] = $found_user_id;
         $_SESSION['user_name'] = $found_user['user_fname'];
         $_SESSION['success_login_number'] = $found_user['success_login_number']+1;
-      
+        $_SESSION['user_level'] = $found_user['user_level'];
 
         //update the user IP by the curren logged in one
         $update_user_query = 'UPDATE tbl_user SET user_ip = :user_ip WHERE user_id = :user_id';
@@ -36,8 +39,8 @@ function login($username, $password, $ip) {
                 ':user_id' => $found_user_id
             )
         );
-        $_SESSION['user_ip'] = $found_user['user_ip'];//write user_ip in session
 
+        $_SESSION['user_ip'] = $found_user['user_ip'];//write user_ip in session
 
         //update the user last login time by the current loggod in one 
         $update_user_query = 'UPDATE tbl_user SET last_login_time =now() WHERE user_id = :user_id';
@@ -66,9 +69,7 @@ function login($username, $password, $ip) {
                
        //after login in succes, redirect user back to index.php, redirect_to function
        redirect_to('index.php');
-
-    }else{
-
+    } else {
        //this is invaild attemp, reject it!
        echo "<br />\n";
        return "Sorry, your username or password isn't correct. ";
@@ -77,15 +78,20 @@ function login($username, $password, $ip) {
 
 
 //only login in user can see the index.php, otherwise, rediect to login page
-function confirm_logged_in(){
-    if(!isset($_SESSION['user_id'])){
-          redirect_to('admin_login.php');
+function confirm_logged_in($admin_above_only=false)
+{
+    if (!isset($_SESSION['user_id'])) {
+        redirect_to("admin_login.php");
+    }
+
+    if (!empty($admin_above_only) && empty($_SESSION['user_level'])) {
+    redirect_to('index.php');
     }
 }
 
-
-//if user log out, redirect user to admin_login.php
-function logout(){
+function logout()
+{
     session_destroy();
+
     redirect_to('admin_login.php');
 }

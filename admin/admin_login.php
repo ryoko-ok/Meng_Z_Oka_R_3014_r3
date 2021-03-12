@@ -5,14 +5,17 @@ require_once '../load.php';
 $ip = $_SERVER['REMOTE_ADDR'];//"REMOTE_ADDR" => The IP address from which the user is viewing the current page.
 // we want get the value $ip, and add it in login() as the third parameter
 
+if (isset($_SESSION['user_id'])) {
+    redirect_to("index.php");
+}
+
 //gain username and password, empty check
 if(isset($_POST['submit'])){
     $username = trim($_POST['username']);
     $password = trim($_POST['password']); //The trim() function removes whitespace and other predefined characters from both sides of a string.
     
-    
     if(!empty($username) && !empty($password)){//if username and password both not empty
-        $result = login($username, $password, $ip);//allow login, login function in login.php
+        $result = login($username, $password, $ip, $id);//allow login, login function in login.php
         $message = $result;
     }else{
         echo "<br />\n";
@@ -34,11 +37,6 @@ if(isset($_POST['submit'])){
     die();
   }
 
-
-//if user already log in, redirect user to index.php, dont allow login in user access admin_login.php again
-if(isset($_SESSION['user_id'])){
-    redirect_to('index.php');
-}
 ?>
 
 <!DOCTYPE html>
